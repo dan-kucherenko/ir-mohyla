@@ -12,8 +12,10 @@ import java.util.*;
 
 public class Dictionary {
     private String[] words = new String[0];
+    private int wordsNum =0;
     private int uniqueWords = 0;
     private int repeatedWords = 0;
+//    private Byte
 
     public String[] getWords() {
         return words;
@@ -39,16 +41,19 @@ public class Dictionary {
         return false;
     }
 
+    public int getWordsNum() {
+        return wordsNum;
+    }
+
     public void createDictionary(String filePath) {
         Reader reader = new Reader();
-        reader.setMaxContentPerSection(1000); // Max string length for the current page.
         reader.setIsIncludingTextContent(true); // Optional, to return the tags-excluded version.
         int pageIndex = 1;
 
         try {
             reader.setFullContent(filePath); // Must call before readSection.
-            BookSection bookSection = reader.readSection(pageIndex);
-            while (bookSection != null) {
+            BookSection bookSection = null;
+            while (pageIndex != reader.getToc().getNavMap().getNavPoints().size()) {
                 bookSection = reader.readSection(pageIndex);
                 String sectionTextContent = bookSection.getSectionTextContent(); // Excludes html tags.
                 pageIndex++;
@@ -67,6 +72,7 @@ public class Dictionary {
             e.printStackTrace();
         }
         Arrays.sort(words);
+        wordsNum = uniqueWords + repeatedWords;
     }
 
     private void addWord(String word) {
@@ -85,15 +91,5 @@ public class Dictionary {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (String word : words) {
-            stringBuilder.append(word).append('\n');
-        }
-        return stringBuilder.toString();
     }
 }
