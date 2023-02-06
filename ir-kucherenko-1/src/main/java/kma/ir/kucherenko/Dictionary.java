@@ -11,15 +11,11 @@ import java.io.IOException;
 import java.util.*;
 
 public class Dictionary {
+    private Byte size;
     private String[] words = new String[0];
-    private int wordsNum =0;
+    private int wordsNum = 0;
     private int uniqueWords = 0;
     private int repeatedWords = 0;
-//    private Byte
-
-    public String[] getWords() {
-        return words;
-    }
 
     public void setWords(String[] words) {
         this.words = words;
@@ -33,16 +29,16 @@ public class Dictionary {
         return uniqueWords;
     }
 
+    public int getWordsNum() {
+        return wordsNum;
+    }
+
     private boolean contains(String word) {
         for (String w : words) {
             if (w.equals(word))
                 return true;
         }
         return false;
-    }
-
-    public int getWordsNum() {
-        return wordsNum;
     }
 
     public void createDictionary(String filePath) {
@@ -67,7 +63,7 @@ public class Dictionary {
                         repeatedWords++;
                 }
             }
-            System.out.println("Dictionary has been created");
+            System.out.println("Dictionary for " + filePath.replace("src/main/books/", "") + " has been created");
         } catch (ReadingException | OutOfPagesException e) {
             e.printStackTrace();
         }
@@ -83,10 +79,12 @@ public class Dictionary {
     }
 
     public void writeToFile(String fileName) {
+        StringBuilder sb = new StringBuilder();
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("src/main/dictionaries/" + fileName));
         ) {
             for (String word : words)
-                bufferedWriter.write(word + '\n');
+                sb.append(word);
+            bufferedWriter.write(sb.toString());
             System.out.println("Successfully written to file");
         } catch (IOException e) {
             e.printStackTrace();
