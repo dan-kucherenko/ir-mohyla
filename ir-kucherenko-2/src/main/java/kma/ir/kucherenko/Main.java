@@ -6,5 +6,8 @@ public class Main {
         dictionary.writeTermDoc("dictionary.txt");
         dictionary.createIncidenceMatrix();
         dictionary.writeIncidenceMatrix("incidence_matrix.txt");
+
+        InvertedIndex invertedIndex = new InvertedIndex(dictionary);
+        System.out.println(invertedIndex);
     }
 }

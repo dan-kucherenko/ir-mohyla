@@ -18,7 +18,7 @@ public class TermDocument {
     private final String path;
 
     public TermDocument() {
-        termDoc = new TreeMap<>();
+        termDoc = new HashMap<>();
         reader = new Reader();
         path = "";
         // Optional, to return the tags-excluded version.
@@ -26,12 +26,16 @@ public class TermDocument {
     }
 
     public TermDocument(String filePath) {
-        termDoc = new TreeMap<>();
+        termDoc = new HashMap<>();
         reader = new Reader();
         this.path = filePath;
         // Optional, to return the tags-excluded version.
         reader.setIsIncludingTextContent(true);
         createTermDoc(path);
+    }
+
+    public Map<String, Set<String>> getTermDoc() {
+        return termDoc;
     }
 
     public void createTermDoc(String filePath) {
