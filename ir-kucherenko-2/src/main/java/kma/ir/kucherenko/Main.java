@@ -2,7 +2,9 @@ package kma.ir.kucherenko;
 
 public class Main {
     public static void main(String[] args) {
-        Dictionary dictionary = new Dictionary("src/main/books");
-        dictionary.writeToFile("dictionary.txt");
+        TermDocument dictionary = new TermDocument("src/main/books");
+        dictionary.writeTermDoc("dictionary.txt");
+        dictionary.createIncidenceMatrix();
+        dictionary.writeIncidenceMatrix("incidence_matrix.txt");
     }
 }

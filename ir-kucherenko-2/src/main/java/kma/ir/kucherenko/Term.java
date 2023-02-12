@@ -3,15 +3,15 @@ package kma.ir.kucherenko;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class Word {
+public class Term {
     private String word;
     private final Set<String> bookSet;
 
-    public Word() {
+    public Term() {
         this.bookSet = new LinkedHashSet<>();
     }
 
-    public Word(String word) {
+    public Term(String word) {
         this.word = word;
         this.bookSet = new LinkedHashSet<>();
     }
