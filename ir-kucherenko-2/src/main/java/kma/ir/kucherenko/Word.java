@@ -1,29 +1,27 @@
 package kma.ir.kucherenko;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Word {
     private String word;
-    private List<String> bookList;
+    private final Set<String> bookSet;
 
     public Word() {
-        this.bookList = new ArrayList<>();
+        this.bookSet = new LinkedHashSet<>();
     }
 
     public Word(String word) {
         this.word = word;
-        this.bookList = new ArrayList<>();
+        this.bookSet = new LinkedHashSet<>();
     }
 
     public String getWord() {
         return word;
     }
 
-    public List<String> getBookList() {
-        return bookList;
+    public Set<String> getBookSet() {
+        return bookSet;
     }
 
     public void setWord(String word) {
@@ -31,7 +29,7 @@ public class Word {
     }
 
     public void addBook(String book) {
-        bookList.add(book);
+        bookSet.add(book);
     }
 
     @Override

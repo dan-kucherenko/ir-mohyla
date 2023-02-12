@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class Dictionary {
-    private final HashMap<String, List<String>> words;
+    private final HashMap<String, Set<String>> words;
     private final Reader reader;
 
     public Dictionary() {
@@ -56,7 +56,7 @@ public class Dictionary {
                         } else if (!(words.containsKey(curWord.getWord()))) {
                             curWord = new Word(word);
                             curWord.addBook(bookName);
-                            words.put(curWord.getWord(), curWord.getBookList());
+                            words.put(curWord.getWord(), curWord.getBookSet());
                         }
                     }
                 }
@@ -76,7 +76,7 @@ public class Dictionary {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("{\n");
-        for (Map.Entry<String, List<String>> entry : words.entrySet())
+        for (Map.Entry<String, Set<String>> entry : words.entrySet())
             sb.append(entry.getKey()).append(" - ").append(entry.getValue()).append('\n');
         return sb.append("\n}").toString();
     }
