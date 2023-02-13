@@ -17,15 +17,11 @@ public class Term {
     }
 
     public String getWord() {
-        return word;
+        return this.word;
     }
 
     public Set<String> getBookSet() {
         return bookSet;
-    }
-
-    public void setWord(String word) {
-        this.word = word;
     }
 
     public void addBook(String book) {
@@ -33,7 +29,7 @@ public class Term {
     }
 
     @Override
-    public  String toString(){
-        return word;
+    public String toString() {
+        return this.word;
     }
 }
