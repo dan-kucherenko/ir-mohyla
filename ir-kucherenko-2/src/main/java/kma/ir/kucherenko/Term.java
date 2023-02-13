@@ -4,12 +4,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class Term {
-    private String word;
+    private final String word;
     private final Set<String> bookSet;
-
-    public Term() {
-        this.bookSet = new LinkedHashSet<>();
-    }
 
     public Term(String word) {
         this.word = word;

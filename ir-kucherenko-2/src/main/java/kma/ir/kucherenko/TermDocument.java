@@ -48,7 +48,7 @@ public class TermDocument {
         else {
             BookSection bookSection = null;
             Term curWord = null;
-            String bookName = filePath.replace("src\\main\\books\\", "");
+            String bookName = filePath.replace("src\\main\\collection\\", "");
             try {
                 reader.setFullContent(filePath); // Must call before readSection.
                 int numOfPages = reader.getToc().getNavMap().getNavPoints().size();
@@ -56,10 +56,10 @@ public class TermDocument {
                     bookSection = reader.readSection(pageIndex);
                     String sectionTextContent = bookSection.getSectionTextContent(); // Excludes html tags.
                     // Split the line into words
-                    String[] wordsSection = sectionTextContent.split("\\W"); // TODO: correct the regexp
-
+                    String[] wordsSection = sectionTextContent.split("[\\s\\[\\]().”“’‘,!—•:;…]");
                     for (String word : wordsSection) {
-                        word = word.toLowerCase();
+                        word = word.toLowerCase().replaceAll("^\\W+", "")
+                                .replaceAll("\\W+$", "");
                         curWord = new Term(word);
                         boolean hasKey = termDoc.containsKey(curWord.getWord());
                         if (hasKey)
