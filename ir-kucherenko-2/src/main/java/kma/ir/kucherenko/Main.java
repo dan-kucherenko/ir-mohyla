@@ -2,12 +2,13 @@ package kma.ir.kucherenko;
 
 public class Main {
     public static void main(String[] args) {
-        TermDocument dictionary = new TermDocument("src/main/books");
-        dictionary.writeTermDoc("dictionary.txt");
-        dictionary.createIncidenceMatrix();
-        dictionary.writeIncidenceMatrix("incidence_matrix.txt");
+        TermDocument termDocument = new TermDocument("src/main/books");
+        termDocument.writeTermDoc("term_document_list.txt");
 
-        InvertedIndex invertedIndex = new InvertedIndex(dictionary);
-        System.out.println(invertedIndex);
+        IncidenceMatrix incidenceMatrix = new IncidenceMatrix(termDocument);
+        incidenceMatrix.writeIncidenceMatrix("incidence_matrix.txt");
+
+        InvertedIndex invertedIndex = new InvertedIndex(termDocument);
+        invertedIndex.writeInvertedIndex("inverted_index.txt");
     }
 }
