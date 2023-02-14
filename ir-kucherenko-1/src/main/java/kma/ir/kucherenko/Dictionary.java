@@ -14,24 +14,13 @@ import java.util.*;
 public class Dictionary {
     private long collectionSize;
     private long dictionarySize;
-    private String[] words = new String[0];
+    private String[] words = new String[1];
     private int wordsNum = 0;
     private int uniqueWords = 0;
     private int repeatedWords = 0;
 
-    public Dictionary() {
-    }
-
     public Dictionary(String filePath) {
         createDictionary(filePath);
-    }
-
-    private boolean contains(String word) {
-        for (String w : words) {
-            if (w.equals(word))
-                return true;
-        }
-        return false;
     }
 
     private void setWords(String[] words) {
@@ -40,7 +29,7 @@ public class Dictionary {
 
     private void addUniqueWords(String[] wordsSection) {
         for (String word : wordsSection) {
-            if (!contains(word)) {
+            if (!Arrays.asList(words).contains(word)) {
                 uniqueWords++;
                 addWordToArr(word);
             } else
@@ -49,10 +38,13 @@ public class Dictionary {
     }
 
     private void addWordToArr(String word) {
-        String[] newWords = new String[words.length + 1];
-        System.arraycopy(words, 0, newWords, 0, words.length);
-        newWords[words.length] = word;
-        setWords(newWords);
+        if (uniqueWords == words.length) {
+            String[] newWords = new String[words.length * 2];
+            System.arraycopy(words, 0, newWords, 0, words.length);
+            newWords[words.length] = word;
+            setWords(newWords);
+        }
+        words[uniqueWords - 1] = word;
     }
 
     public int getRepeatedWords() {
@@ -108,11 +100,13 @@ public class Dictionary {
 
     public void writeToFile(String fileName) {
         StringBuilder sb = new StringBuilder();
-        Arrays.sort(words);
+        String [] finalResult = new String[uniqueWords];
+        System.arraycopy(words, 0, finalResult, 0, uniqueWords);
+        Arrays.sort(finalResult);
         File dictionary = new File("src/main/dictionaries/" + fileName);
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(dictionary));
         ) {
-            for (String word : words)
+            for (String word : finalResult)
                 sb.append(word).append('\n');
             bufferedWriter.write(sb.toString());
             System.out.println("Successfully written to file");
