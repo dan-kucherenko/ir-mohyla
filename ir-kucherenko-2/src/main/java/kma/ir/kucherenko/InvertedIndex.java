@@ -33,7 +33,7 @@ public class InvertedIndex {
         String[] books = null;
         for (Map.Entry<String, Set<String>> map : sortedTermDoc.entrySet()) {
             books = map.getValue().toArray(new String[0]);
-            sb.append(map.getKey()).append(':').append(map.getValue().size()).append(':');
+            sb.append(map.getKey()).append(':');
             for (int i = 0; i < books.length; i++) {
                 if (map.getValue().contains(books[i]))
                     sb.append(i + 1);

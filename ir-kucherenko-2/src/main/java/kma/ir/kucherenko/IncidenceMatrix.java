@@ -8,13 +8,13 @@ import java.util.*;
 
 public class IncidenceMatrix {
     private final Map<String, Set<String>> termDocSet;
-    private final int[][] matrix;
+    private final byte[][] matrix;
     private final File[] books;
 
     public IncidenceMatrix(TermDocument termDocument) {
         this.termDocSet = termDocument.getTermDoc();
         this.books = new File(termDocument.getPath()).listFiles();
-        this.matrix = new int[termDocSet.size()][Objects.requireNonNull(books).length];
+        this.matrix = new byte[termDocSet.size()][Objects.requireNonNull(books).length];
         createIncidenceMatrix();
     }
 
@@ -30,12 +30,12 @@ public class IncidenceMatrix {
         }
     }
 
-    public void writeIncidenceMatrix(String fileName) {
+    public void writeIncidenceMatrix(String fileName)  {
         StringBuilder sb = new StringBuilder();
         sb.append("[\n");
-        for (int[] ints : matrix)
-            sb.append(Arrays.toString(ints)).append('\n');
-        sb.append("\n]");
+            for (int i = 0; i < matrix.length; i++)
+                sb.append(termDocSet.keySet().toArray()[i]).append(':').append(Arrays.toString(matrix[i])).append('\n');
+        sb.append("]");
         new File("src/main/additional_files/").mkdirs();
         File dictionary = new File("src/main/additional_files/" + fileName);
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(dictionary));
