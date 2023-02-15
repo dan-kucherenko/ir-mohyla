@@ -12,39 +12,21 @@ import java.io.IOException;
 import java.util.*;
 
 public class Dictionary {
+    private final Reader reader;
+    private final StringBuilder resWriter;
     private long collectionSize;
     private long dictionarySize;
-    private String[] words = new String[1];
+    private String[] words;
     private int wordsNum = 0;
     private int uniqueWords = 0;
     private int repeatedWords = 0;
 
     public Dictionary(String filePath) {
+        this.words = new String[100];
+        this.reader = new Reader();
+        this.resWriter = new StringBuilder();
+        reader.setIsIncludingTextContent(true); // Optional, to return the tags-excluded version.
         createDictionary(filePath);
-    }
-
-    private void setWords(String[] words) {
-        this.words = words;
-    }
-
-    private void addUniqueWords(String[] wordsSection) {
-        for (String word : wordsSection) {
-            if (!Arrays.asList(words).contains(word)) {
-                uniqueWords++;
-                addWordToArr(word);
-            } else
-                repeatedWords++;
-        }
-    }
-
-    private void addWordToArr(String word) {
-        if (uniqueWords == words.length) {
-            String[] newWords = new String[words.length * 2];
-            System.arraycopy(words, 0, newWords, 0, words.length);
-            newWords[words.length] = word;
-            setWords(newWords);
-        }
-        words[uniqueWords - 1] = word;
     }
 
     public int getRepeatedWords() {
@@ -70,22 +52,15 @@ public class Dictionary {
     public void createDictionary(String filePath) {
         final File folder = new File(filePath);
         if (folder.listFiles() != null) {
-            for (File book : Objects.requireNonNull(folder.listFiles())) {
-                collectionSize += book.length();
-                createDictionary(filePath + '/' + book.getName());
-            }
+            createDictionaryFolder(folder);
         } else {
-            Reader reader = new Reader();
-            reader.setIsIncludingTextContent(true); // Optional, to return the tags-excluded version.
-            int pageIndex = 1;
-
+            BookSection bookSection;
             try {
                 reader.setFullContent(filePath); // Must call before readSection.
-                BookSection bookSection = null;
-                while (pageIndex != reader.getToc().getNavMap().getNavPoints().size()) {
+                final int pagesNum = reader.getToc().getNavMap().getNavPoints().size();
+                for (int pageIndex = 1; pageIndex < pagesNum; pageIndex++) {
                     bookSection = reader.readSection(pageIndex);
                     String sectionTextContent = bookSection.getSectionTextContent(); // Excludes html tags.
-                    pageIndex++;
                     // Split the line into words
                     String[] wordsSection = sectionTextContent.split("\\W");
                     addUniqueWords(wordsSection);
@@ -99,20 +74,47 @@ public class Dictionary {
     }
 
     public void writeToFile(String fileName) {
-        StringBuilder sb = new StringBuilder();
-        String [] finalResult = new String[uniqueWords];
-        System.arraycopy(words, 0, finalResult, 0, uniqueWords);
-        Arrays.sort(finalResult);
         File dictionary = new File("src/main/dictionaries/" + fileName);
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(dictionary));
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(dictionary))
         ) {
-            for (String word : finalResult)
-                sb.append(word).append('\n');
-            bufferedWriter.write(sb.toString());
+            bufferedWriter.write(resWriter.toString());
             System.out.println("Successfully written to file");
         } catch (IOException e) {
             e.printStackTrace();
         }
         dictionarySize = dictionary.length();
+    }
+
+    private void createDictionaryFolder(File folder) {
+        for (File book : Objects.requireNonNull(folder.listFiles())) {
+            collectionSize += book.length();
+            createDictionary(book.getPath());
+        }
+    }
+
+    private void addWordToArr(String word) {
+        uniqueWords++;
+        if (uniqueWords == words.length) {
+            String[] newWords = new String[words.length * 2];
+            System.arraycopy(words, 0, newWords, 0, words.length);
+            newWords[words.length] = word;
+            setWords(newWords);
+        }
+        words[uniqueWords - 1] = word;
+    }
+
+    private void setWords(String[] words) {
+        this.words = words;
+    }
+
+    private void addUniqueWords(String[] wordsSection) {
+        for (String word : wordsSection) {
+            word = word.toLowerCase();
+            if (!Arrays.asList(words).contains(word)) {
+                resWriter.append(word).append('\n');
+                addWordToArr(word);
+            } else
+                repeatedWords++;
+        }
     }
 }
