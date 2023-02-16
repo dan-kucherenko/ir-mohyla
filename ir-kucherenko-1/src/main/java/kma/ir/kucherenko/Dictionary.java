@@ -93,14 +93,12 @@ public class Dictionary {
     }
 
     private void addWordToArr(String word) {
-        uniqueWords++;
+        words[uniqueWords++] = word;
         if (uniqueWords == words.length) {
             String[] newWords = new String[words.length * 2];
             System.arraycopy(words, 0, newWords, 0, words.length);
-            newWords[words.length] = word;
             setWords(newWords);
         }
-        words[uniqueWords - 1] = word;
     }
 
     private void setWords(String[] words) {

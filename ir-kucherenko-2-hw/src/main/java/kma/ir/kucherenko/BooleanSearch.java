@@ -8,11 +8,9 @@ import java.util.regex.Pattern;
 
 public class BooleanSearch {
     private final File[] books;
-    private Map<String, Integer> booleanMap;
     private final Map<String, Set<Integer>> invertedIndexMap;
 
     public BooleanSearch(InvertedIndex ii) {
-        this.booleanMap = new HashMap<>();
         this.books = ii.getBooks();
         invertedIndexMap = ii.getSortedTermDoc();
     }
