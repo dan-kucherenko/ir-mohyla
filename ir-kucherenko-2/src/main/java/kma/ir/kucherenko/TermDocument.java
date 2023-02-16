@@ -17,15 +17,6 @@ public class TermDocument {
     private final Reader reader;
     private final String path;
 
-    public TermDocument() {
-        termDoc = new HashMap<>();
-        books = null;
-        path = "";
-        reader = new Reader();
-        // Optional, to return the tags-excluded version.
-        reader.setIsIncludingTextContent(true);
-    }
-
     public TermDocument(String filePath) {
         termDoc = new HashMap<>();
         this.path = filePath;
