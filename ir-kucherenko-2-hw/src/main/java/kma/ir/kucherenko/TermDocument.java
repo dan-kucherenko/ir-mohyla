@@ -13,11 +13,13 @@ import java.util.*;
 
 public class TermDocument {
     private final Map<String, Set<String>> termDoc;
+    private final File[] books;
     private final Reader reader;
     private final String path;
 
     public TermDocument() {
         termDoc = new HashMap<>();
+        books = null;
         path = "";
         reader = new Reader();
         // Optional, to return the tags-excluded version.
@@ -27,6 +29,7 @@ public class TermDocument {
     public TermDocument(String filePath) {
         termDoc = new HashMap<>();
         this.path = filePath;
+        books = new File(filePath).listFiles();
         reader = new Reader();
         // Optional, to return the tags-excluded version.
         reader.setIsIncludingTextContent(true);
@@ -35,6 +38,10 @@ public class TermDocument {
 
     public Map<String, Set<String>> getTermDoc() {
         return termDoc;
+    }
+
+    public File[] getBooks() {
+        return books;
     }
 
     public String getPath() {
