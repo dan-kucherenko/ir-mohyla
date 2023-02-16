@@ -21,6 +21,10 @@ public class InvertedIndex {
         return sortedTermDoc;
     }
 
+    public File[] getBooks() {
+        return books;
+    }
+
     public void writeInvertedIndex(String fileName) {
         new File("src/main/additional_files/").mkdirs();
         File dictionary = new File("src/main/additional_files/" + fileName);
