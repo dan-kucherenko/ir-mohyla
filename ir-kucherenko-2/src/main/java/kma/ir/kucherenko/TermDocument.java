@@ -5,26 +5,31 @@ import com.github.mertakdut.Reader;
 import com.github.mertakdut.exception.OutOfPagesException;
 import com.github.mertakdut.exception.ReadingException;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class TermDocument {
     private final Map<String, Set<String>> termDoc;
+    private final File[] books;
     private final Reader reader;
     private final String path;
 
     public TermDocument() {
         termDoc = new HashMap<>();
+        books = null;
         path = "";
         reader = new Reader();
         // Optional, to return the tags-excluded version.
         reader.setIsIncludingTextContent(true);
     }
 
-    public TermDocument(String filePath)
-    {
+    public TermDocument(String filePath) {
         termDoc = new HashMap<>();
         this.path = filePath;
+        books = new File(filePath).listFiles();
         reader = new Reader();
         // Optional, to return the tags-excluded version.
         reader.setIsIncludingTextContent(true);
@@ -33,6 +38,10 @@ public class TermDocument {
 
     public Map<String, Set<String>> getTermDoc() {
         return termDoc;
+    }
+
+    public File[] getBooks() {
+        return books;
     }
 
     public String getPath() {
@@ -76,8 +85,28 @@ public class TermDocument {
         }
     }
 
+    public void writeTermDoc(String fileName) {
+        new File("src/main/additional_files/").mkdirs();
+        File dictionary = new File("src/main/additional_files/" + fileName);
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(dictionary));
+        ) {
+            bufferedWriter.write(String.valueOf(this));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void createDictionaryForFolders(File folder) {
         for (File book : Objects.requireNonNull(folder.listFiles()))
             createTermDoc(book.getPath());
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{\n");
+        for (Map.Entry<String, Set<String>> entry : termDoc.entrySet())
+            sb.append(entry.getKey()).append(" - ").append(entry.getValue()).append('\n');
+        return sb.append("\n}").toString();
     }
 }

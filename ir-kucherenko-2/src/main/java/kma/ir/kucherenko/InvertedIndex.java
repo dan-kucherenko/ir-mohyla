@@ -4,16 +4,17 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 public class InvertedIndex {
-    private final Map<String, Set<String>> sortedTermDoc;
+    private final Map<String, Set<Integer>> sortedTermDoc;
+    private final File[] books;
 
     public InvertedIndex(TermDocument termDocument) {
+        books = termDocument.getBooks();
         sortedTermDoc = new TreeMap<>();
-        sortedTermDoc.putAll(termDocument.getTermDoc());
+        for (Map.Entry<String, Set<String>> map : termDocument.getTermDoc().entrySet())
+            sortedTermDoc.put(map.getKey(), convertBooksToInteger(map.getValue(), termDocument.getPath()));
     }
 
     public void writeInvertedIndex(String fileName) {
@@ -27,21 +28,18 @@ public class InvertedIndex {
         }
     }
 
+    private Set<Integer> convertBooksToInteger(Set<String> booksSet, String filepath) {
+        Set<Integer> res = new LinkedHashSet<>();
+        for (String book : booksSet)
+            res.add(Arrays.asList(books).indexOf(new File(filepath + '/' + book)) + 1);
+        return res;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        String[] books = null;
-        for (Map.Entry<String, Set<String>> map : sortedTermDoc.entrySet()) {
-            books = map.getValue().toArray(new String[0]);
-            sb.append(map.getKey()).append(':');
-            for (int i = 0; i < books.length; i++) {
-                if (map.getValue().contains(books[i]))
-                    sb.append(i + 1);
-                if (i != books.length - 1 && map.getValue().contains(books[i + 1]))
-                    sb.append(',');
-            }
-            sb.append('\n');
-        }
+        for (Map.Entry<String, Set<Integer>> map : sortedTermDoc.entrySet())
+            sb.append(map.getKey()).append(':').append(map.getValue()).append('\n');
         return sb.toString();
     }
 }
