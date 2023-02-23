@@ -4,9 +4,7 @@ import kma.ir.kucherenko.BooleanSearch;
 import kma.ir.kucherenko.biword.BiWord;
 import kma.ir.kucherenko.biword.BiWordIndex;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 public class BiWordSearcher extends BooleanSearch<BiWord, Set<Integer>> {
     private final BiWordIndex biWordIndex;
@@ -23,19 +21,24 @@ public class BiWordSearcher extends BooleanSearch<BiWord, Set<Integer>> {
 
     @Override
     public String[] search(String query) {
-        Set<Integer> resSet = new LinkedHashSet<>();
-        String[] split = query.split(" ");
+        Set<Integer> curSet = new LinkedHashSet<>();
+        Set<Integer> prevSet;
+        String[] split = query.split("\\s");
         BiWord[] pairs = new BiWord[split.length - 1];
         if (split.length > 1) {
             for (int i = 0; i < pairs.length; i++)
-                pairs[i] = new BiWord(split[i], split[i + 1]);
+                pairs[i] = new BiWord(split[i].replaceAll("\\W+", "").toLowerCase(), split[i + 1].replaceAll("\\W+", "").toLowerCase());
         }
         for (BiWord pair : pairs) {
             if (biWordIndex.getIndex().containsKey(pair)) {
-                resSet.addAll(biWordIndex.getIndex().get(pair));
+                prevSet = curSet;
+                curSet = biWordIndex.getIndex().get(pair);
+                if (curSet.isEmpty() || prevSet.isEmpty())
+                    continue;
+                curSet = new LinkedHashSet<>(makeOperation("and", curSet, prevSet));
             }
         }
-        ArrayList<Integer> res = new ArrayList<>(resSet);
+        ArrayList<Integer> res = new ArrayList<>(curSet);
         return convertIntegerToBookName(res);
     }
 }

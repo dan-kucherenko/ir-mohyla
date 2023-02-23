@@ -5,7 +5,6 @@ import kma.ir.kucherenko.coord_inverted.CoordInverted;
 import kma.ir.kucherenko.search.BiWordSearcher;
 
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
