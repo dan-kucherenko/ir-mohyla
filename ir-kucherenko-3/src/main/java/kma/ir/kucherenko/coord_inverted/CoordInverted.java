@@ -6,13 +6,10 @@ import com.github.mertakdut.exception.OutOfPagesException;
 import com.github.mertakdut.exception.ReadingException;
 import kma.ir.kucherenko.Index;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 
-public class CoordInverted extends Index<String, TreeMap<Integer, TreeSet<Integer>>> {
+public class CoordInverted extends Index<String, HashMap<Integer, TreeSet<Integer>>> {
     public CoordInverted(String filePath) {
         booksFolder = new File(filePath).listFiles();
         index = new TreeMap<>();
@@ -50,7 +47,7 @@ public class CoordInverted extends Index<String, TreeMap<Integer, TreeSet<Intege
     }
 
     private void insertNewTerm(String term, int bookIndex, int position) {
-        TreeMap<Integer, TreeSet<Integer>> innerMap = index.computeIfAbsent(term, k -> new TreeMap<>());
+        HashMap<Integer, TreeSet<Integer>> innerMap = index.computeIfAbsent(term, k -> new HashMap<>());
         TreeSet<Integer> positions = innerMap.computeIfAbsent(bookIndex, k -> new TreeSet<>());
         positions.add(position);
     }

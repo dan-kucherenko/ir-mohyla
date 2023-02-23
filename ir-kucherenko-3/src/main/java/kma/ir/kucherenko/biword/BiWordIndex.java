@@ -36,7 +36,7 @@ public class BiWordIndex extends Index<BiWord, Set<Integer>> {
                     String[] wordsSection = sectionTextContent.split("[\\s\\[\\]().”“’‘,!—•:;…]");
                     for (String word : wordsSection) {
                         word = formatWord(word);
-                        addWordIfMapNContains(word, Arrays.asList(booksFolder).indexOf(folder));
+                        addWordIfMapNContains(word, Arrays.asList(booksFolder).indexOf(folder) + 1);
                     }
                 }
             } catch (ReadingException | OutOfPagesException e) {

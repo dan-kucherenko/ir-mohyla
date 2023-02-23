@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-public abstract class Index <T1, T2> {
+public abstract class Index<T1, T2> {
     protected Map<T1, T2> index;
     protected Reader reader;
     protected File[] booksFolder;
@@ -24,6 +24,14 @@ public abstract class Index <T1, T2> {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public File[] getBooksFolder() {
+        return booksFolder;
+    }
+
+    public Map<T1, T2> getIndex(){
+        return index;
     }
 
     protected String formatWord(String word) {
