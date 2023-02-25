@@ -9,10 +9,10 @@ public class TermDocTrie {
 
     public TermDocTrie(TermDocument termDoc) {
         this.trie = new Trie();
-        buildTrie(termDoc);
+        createTrie(termDoc);
     }
 
-    private void buildTrie(TermDocument termDoc) {
+    private void createTrie(TermDocument termDoc) {
         for (String term : termDoc.getDictionary())
             trie.insert(term);
     }
