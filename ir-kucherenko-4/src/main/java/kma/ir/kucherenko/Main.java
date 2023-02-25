@@ -1,6 +1,7 @@
 package kma.ir.kucherenko;
 
 import kma.ir.kucherenko.permuterm.PermuTerm;
+import kma.ir.kucherenko.threegram.TriGram;
 import kma.ir.kucherenko.trie.TermDocTrie;
 
 import java.io.IOException;
@@ -12,8 +13,12 @@ public class Main {
 //        TermDocTrie termDocTrie = new TermDocTrie(termDocument);
 //        termDocTrie.write("trie.txt");
 
-        PermuTerm permuTerm = new PermuTerm(termDocument);
-        permuTerm.createPermuTerm();
-        permuTerm.write("permuterm_index.txt");
+//        PermuTerm permuTerm = new PermuTerm(termDocument);
+//        permuTerm.createPermuTerm();
+//        permuTerm.write("permuterm_index.txt");
+
+        TriGram triGram = new TriGram();
+        triGram.createTriGram(termDocument);
+        triGram.write("trigram_index.txt");
     }
 }
