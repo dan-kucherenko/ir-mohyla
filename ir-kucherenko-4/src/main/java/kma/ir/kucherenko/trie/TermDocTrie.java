@@ -12,6 +12,10 @@ public class TermDocTrie {
         createTrie(termDoc);
     }
 
+    public Trie getTrie() {
+        return trie;
+    }
+
     private void createTrie(TermDocument termDoc) {
         for (String term : termDoc.getDictionary())
             trie.insert(term);

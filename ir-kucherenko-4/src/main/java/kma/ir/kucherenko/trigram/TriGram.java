@@ -1,4 +1,4 @@
-package kma.ir.kucherenko.threegram;
+package kma.ir.kucherenko.trigram;
 
 import kma.ir.kucherenko.TermDocument;
 

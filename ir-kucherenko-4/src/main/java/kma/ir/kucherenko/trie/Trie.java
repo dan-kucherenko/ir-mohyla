@@ -3,47 +3,17 @@ package kma.ir.kucherenko.trie;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
-
-class TrieNode {
-    private Map<Character, TrieNode> children;
-    private boolean hasChildren;
-    private char nodeChar;
-
-    public TrieNode() {
-        this.children = new HashMap<>();
-        this.hasChildren = false;
-    }
-
-    public TrieNode(char nodeChar) {
-        this.children = new HashMap<>();
-        this.hasChildren = false;
-        this.nodeChar = nodeChar;
-    }
-
-    public boolean hasChild() {
-        return hasChildren;
-    }
-
-    public void setHasChildren(boolean hasChildren) {
-        this.hasChildren = hasChildren;
-    }
-
-    public Map<Character, TrieNode> getChildren() {
-        return children;
-    }
-
-    public char getNodeCharacter() {
-        return nodeChar;
-    }
-}
 
 public class Trie {
     private final TrieNode root;
 
     public Trie() {
         this.root = new TrieNode();
+    }
+
+    public TrieNode getRoot() {
+        return root;
     }
 
     public void insert(String word) {
