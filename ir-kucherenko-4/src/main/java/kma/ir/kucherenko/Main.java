@@ -1,6 +1,5 @@
 package kma.ir.kucherenko;
 
-import kma.ir.kucherenko.jokersearch.JokerSearch;
 import kma.ir.kucherenko.permuterm.PermuTerm;
 import kma.ir.kucherenko.trigram.TriGram;
 import kma.ir.kucherenko.trie.TermDocTrie;
@@ -22,7 +21,6 @@ public class Main {
         triGram.createTriGram(termDocument);
         triGram.write("trigram_index.txt");
 
-        JokerSearch jokerSearch = new JokerSearch(permuTerm, triGram, termDocTrie.getTrie());
-        System.out.println(jokerSearch.search("hel*").toString());
+        System.out.println(permuTerm.permuTermWildCardSearch("*ca*").toString());
     }
 }

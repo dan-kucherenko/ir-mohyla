@@ -40,8 +40,10 @@ public class TermDocument {
                     // Split the line into words
                     String[] wordsSection = sectionTextContent.split("\\W+");
                     for (String word : wordsSection) {
-                        word = word.toLowerCase();
-                        dictionary.add(word);
+                        if (!word.equals("")) {
+                            word = word.toLowerCase();
+                            dictionary.add(word);
+                        }
                     }
                 }
             } catch (ReadingException | OutOfPagesException e) {

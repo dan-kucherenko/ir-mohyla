@@ -22,15 +22,32 @@ public class PermuTerm {
             makeVariations(term);
     }
 
-    private void makeVariations(String term) {
+    public List<String> makeVariations(String term) {
         StringBuilder variations = new StringBuilder(term + '$');
         List<String> termVars = new ArrayList<>();
+        termVars.add(variations.toString());
         for (int i = 0; i < term.length(); i++) {
             variations.append(term.charAt(i));
             variations.deleteCharAt(0);
             termVars.add(variations.toString());
         }
         permuTermIndex.put(termVars, term);
+        return termVars;
+    }
+
+    public List<String> permuTermWildCardSearch(String query) {
+        List<String> results;
+        if (query.charAt(0) == '*' && query.charAt(query.length() - 1) == '*')
+            results = jokerOnBothSides(query);
+        else if (query.charAt(query.length() - 1) == '*')
+            results = jokerAtTheEnd(query);
+        else if (query.charAt(0) == '*')
+            results = jokerAtTheStart(query);
+        else {
+            int wildcardIndex = query.indexOf('*');
+            results = jokerInTheMiddle(query, wildcardIndex);
+        }
+        return results;
     }
 
     public void write(String filePath) {
@@ -42,6 +59,53 @@ public class PermuTerm {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private List<String> jokerOnBothSides(String query) {
+        List<String> results = new ArrayList<>();
+        String searchKey = query.substring(1, query.length() - 1);
+        for (Map.Entry<List<String>, String> entry : permuTermIndex.entrySet()) {
+            List<String> termVars = entry.getKey();
+            for (String var : termVars)
+                if (var.startsWith(searchKey) && !var.equals(termVars.get(0)))
+                    results.add(entry.getValue());
+        }
+        return results;
+    }
+
+    private List<String> jokerAtTheStart(String query) {
+        List<String> results = new ArrayList<>();
+        String searchKey = query.substring(1);
+        for (Map.Entry<List<String>, String> entry : permuTermIndex.entrySet()) {
+            List<String> termVars = entry.getKey();
+            String lastTermVar = termVars.get(termVars.size() - 1);
+            if (lastTermVar.endsWith(searchKey))
+                results.add(entry.getValue());
+        }
+        return results;
+    }
+
+    private List<String> jokerInTheMiddle(String query, int wildcardIndex) {
+        List<String> results = new ArrayList<>();
+        String firstPart = query.substring(0, wildcardIndex);
+        String secondPart = query.substring(wildcardIndex + 1);
+        for (Map.Entry<List<String>, String> entry : permuTermIndex.entrySet()) {
+            List<String> termVars = entry.getKey();
+            String firstTermVar = termVars.get(0);
+            String lastTermVar = termVars.get(termVars.size() - 1);
+            if (firstTermVar.startsWith(firstPart) && lastTermVar.endsWith(secondPart))
+                results.add(entry.getValue());
+        }
+        return results;
+    }
+
+    private List<String> jokerAtTheEnd(String query) {
+        List<String> results = new ArrayList<>();
+        String searchKey = query.substring(0, query.length() - 1);
+        for (Map.Entry<List<String>, String> entry : permuTermIndex.entrySet())
+            if (entry.getKey().get(0).startsWith(searchKey))
+                results.add(entry.getValue());
+        return results;
     }
 
     @Override
