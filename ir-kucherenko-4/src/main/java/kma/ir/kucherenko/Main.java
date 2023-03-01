@@ -5,6 +5,8 @@ import kma.ir.kucherenko.trigram.TriGram;
 import kma.ir.kucherenko.trie.TermDocTrie;
 
 import java.io.IOException;
+import java.util.Objects;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -21,6 +23,13 @@ public class Main {
         triGram.createTriGram(termDocument);
         triGram.write("trigram_index.txt");
 
-        System.out.println(permuTerm.permuTermWildCardSearch("*ca*").toString());
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Trie search:");
+        String query = sc.nextLine();
+        while (!query.equals("stop")) {
+            System.out.println("Result of trie search for " + query + " is " + termDocTrie.getTrie().searchTrie(query).toString());
+            System.out.println("If you want to continue, just type in a new request");
+            query = sc.nextLine();
+        }
     }
 }
