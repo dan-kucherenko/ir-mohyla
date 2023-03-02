@@ -6,7 +6,10 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PermuTerm {
     private final Map<List<String>, String> permuTermIndex;
@@ -36,16 +39,22 @@ public class PermuTerm {
     }
 
     public List<String> permuTermWildCardSearch(String query) {
-        List<String> results;
-        if (query.charAt(0) == '*' && query.charAt(query.length() - 1) == '*')
-            results = jokerOnBothSides(query);
-        else if (query.charAt(query.length() - 1) == '*')
-            results = jokerAtTheEnd(query);
-        else if (query.charAt(0) == '*')
-            results = jokerAtTheStart(query);
-        else {
-            int wildcardIndex = query.indexOf('*');
-            results = jokerInTheMiddle(query, wildcardIndex);
+        List<String> results = new ArrayList<>();
+        try {
+            if (!matchesPattern(query))
+                throw new InvalidParameterException("Invalid request syntax");
+            if (query.charAt(0) == '*' && query.charAt(query.length() - 1) == '*')
+                results = jokerOnBothSides(query);
+            else if (query.charAt(query.length() - 1) == '*')
+                results = jokerAtTheEnd(query);
+            else if (query.charAt(0) == '*')
+                results = jokerAtTheStart(query);
+            else {
+                int wildcardIndex = query.indexOf('*');
+                results = jokerInTheMiddle(query, wildcardIndex);
+            }
+        } catch (InvalidParameterException e) {
+            e.printStackTrace();
         }
         return results;
     }
@@ -106,6 +115,13 @@ public class PermuTerm {
             if (entry.getKey().get(0).startsWith(searchKey))
                 results.add(entry.getValue());
         return results;
+    }
+
+    private boolean matchesPattern(String query) {
+        Pattern p = Pattern.compile("^(\\*)?\\w+(\\*)?\\w+(\\*)?$");
+        query = query.toLowerCase();
+        Matcher m = p.matcher(query);
+        return m.matches();
     }
 
     @Override
