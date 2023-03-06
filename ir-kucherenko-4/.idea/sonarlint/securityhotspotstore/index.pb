@@ -1,8 +1,4 @@
 
-7
-pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
-8
-trie.txt,e\b\eb4b30578e74c0dda255a710b3213103822cdc47
 a
 1src/main/java/kma/ir/kucherenko/TermDocument.java,8\f\8f1f3bb6dee6a6e03019dcf68c6b6a8a22e70f62
 h
@@ -13,11 +9,11 @@ d
 -src/main/additional_files/permuterm_index.txt,7\e\7e0670696527e58c513dbdc9ba156398a1cc1e7f
 [
 +src/main/additional_files/trigram_index.txt,d\5\d5be9120128c4b0848f1fbdfadf24eef21dfbe1a
+Y
+)src/main/java/kma/ir/kucherenko/Main.java,c\8\c89441d8015eab2d0b2f50b63cacd8c974dcc264
 b
 2src/main/java/kma/ir/kucherenko/trie/TrieNode.java,9\4\94a9ced9aeedb885ef6628d69b34cd3d7d338644
 ^
 .src/main/java/kma/ir/kucherenko/trie/Trie.java,2\b\2b8fa7cb434db661694b79c6099b7134be4c2a96
 e
 5src/main/java/kma/ir/kucherenko/trie/TermDocTrie.java,6\8\688ff1199f64acd10834cbb7351bc93221cf9574
-Y
-)src/main/java/kma/ir/kucherenko/Main.java,c\8\c89441d8015eab2d0b2f50b63cacd8c974dcc264

@@ -28,7 +28,7 @@ public class Main {
         CoordIndexSearcher coordIndexSearcher = new CoordIndexSearcher(coordInverted);
         System.out.print("Enter query for coordinated index search: ");
         query = sc.nextLine();
-        while (!query.equals("stop")) {
+        while (!query.equals("stop"))  {
             System.out.println("Result of request:" + query + " is " + Arrays.toString(coordIndexSearcher.search(query)));
             System.out.println("If you want to continue, just type in a new request");
             query = sc.nextLine();

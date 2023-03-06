@@ -59,7 +59,6 @@ public class CoordIndexSearcher extends BooleanSearch<String, HashMap<Integer, T
     private void addBookByGap(String firstWord, String secondWord, int bookIndex, int gap){
         TreeSet<Integer> positionsOfFirstWord = coordInverted.getIndex().get(firstWord).get(bookIndex);
         TreeSet<Integer> positionsOfSecondWord = coordInverted.getIndex().get(secondWord).get(bookIndex);
-
         for(int position : positionsOfSecondWord){
             boolean containsPos = positionsOfFirstWord.contains(position - gap);
             if (containsPos){
