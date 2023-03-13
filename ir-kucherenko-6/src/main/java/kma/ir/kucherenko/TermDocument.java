@@ -18,7 +18,7 @@ public class TermDocument {
     private final String path;
 
     public TermDocument(String filePath) {
-        termDoc = new HashMap<>();
+        termDoc = new TreeMap<>();
         reader = new Reader();
         books = null;
         path = "";
