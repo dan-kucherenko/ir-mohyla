@@ -17,6 +17,10 @@ public class InvertedIndex {
             sortedTermDoc.put(map.getKey(), convertBooksToInteger(map.getValue(), termDocument.getPath()));
     }
 
+    public Map<String, Set<Integer>> getSortedTermDoc() {
+        return sortedTermDoc;
+    }
+
     public void writeInvertedIndex(String fileName) {
         new File("src/main/additional_files/").mkdirs();
         File dictionary = new File("src/main/additional_files/" + fileName);

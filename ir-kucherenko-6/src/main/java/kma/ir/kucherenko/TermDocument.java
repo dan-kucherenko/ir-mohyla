@@ -20,8 +20,8 @@ public class TermDocument {
     public TermDocument(String filePath) {
         termDoc = new TreeMap<>();
         reader = new Reader();
-        books = null;
-        path = "";
+        books = new File(filePath).listFiles();
+        path = filePath;
         // Optional, to return the tags-excluded version.
         reader.setIsIncludingTextContent(true);
         createTermDoc(filePath);
@@ -69,7 +69,6 @@ public class TermDocument {
                         }
                     }
                 }
-                System.out.println("Dictionary for " + bookName + " has been created");
             } catch (ReadingException | OutOfPagesException e) {
                 e.printStackTrace();
             }
@@ -96,7 +95,7 @@ public class TermDocument {
         StringBuilder sb = new StringBuilder();
         sb.append("{\n");
         for (Map.Entry<String, Set<String>> entry : termDoc.entrySet())
-            sb.append(entry.getKey()).append(" - ").append(entry.getValue()).append('\n');
+            sb.append(entry.getKey()).append('\n');
         return sb.append("\n}").toString();
     }
 }
