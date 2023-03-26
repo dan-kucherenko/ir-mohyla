@@ -1,21 +1,3 @@
 
-T
-$src/main/additional_files/result.txt,9\6\96d7204e2e5f45d2d8ac1bd08f317d6f45ca9c93
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
-Y
-)src/main/java/kma/ir/kucherenko/Main.java,c\8\c89441d8015eab2d0b2f50b63cacd8c974dcc264
-X
-(src/main/additional_files/blocks/block_5,d\8\d8249f4d527bf802da29498cea41c436d9035a6a
-`
-0src/main/java/kma/ir/kucherenko/spimi/Spimi.java,6\5\65007af00d5dbfd6ab563133dad563c4bae64619
-V
-&src/main/additional_files/spimi_result,a\1\a180fc278722f6e7f3c9256e8e8f5e04cce99e50
-X
-(src/main/additional_files/blocks/block_6,2\7\27320f75110c940c93ce50653c0d7c5d127a71a4
-Z
-*src/main/additional_files/blocks/block_184,b\6\b6d2f81bfb61795f5a61fb0cea29f61a2db56dbe
-Z
-*src/main/additional_files/blocks/block_462,5\4\54b45a633f3195d36948f921ab98550449f0edb1
-[
-+src/main/additional_files/blocks/block_2024,2\8\286f1bbda8fd758aba99a1ff3aff3fbce31df7bd
