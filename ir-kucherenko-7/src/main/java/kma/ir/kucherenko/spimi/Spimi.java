@@ -16,7 +16,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class Spimi {
-    private static int MAX_TERMS = 10000;
+    private static int MAX_TERMS = 100000;
     private final FictionBook[] documents;
     private static final String BLOCK_PATH = "src/main/additional_files/blocks";
     private Map<String, TreeSet<Integer>> index = new TreeMap<>();
@@ -35,7 +35,11 @@ public class Spimi {
         }
     }
 
-    public void executeSPIMI()  {
+    public Map<String, TreeSet<Integer>> getIndex() {
+        return index;
+    }
+
+    public void executeSPIMI() {
         buildSpimiIndex();
         try {
             mergeBlocksToFile();
@@ -47,28 +51,32 @@ public class Spimi {
     private void buildSpimiIndex() {
         for (FictionBook document : documents) {
             int docID = id;
+            String title = document.getTitle();
+            String[] titleArr = title.split("\\W+");
+            for (String word : titleArr)
+                counter = addWord(word.toLowerCase(), docID, counter);
             for (Section section : document.getBody().getSections()) {
                 for (Element element : section.getElements()) {
                     String[] words = element.getText().trim().toLowerCase().split("\\W+");
                     for (String word : words) {
                         if (!word.equals("") && word.length() >= 1) {
-                            if (counter > MAX_TERMS) {
-                                // flush to disk
-                                System.out.println("flushing...");
-                                writeBlockToFile();
-                                counter = 0;
-                            } else {
-                                if (index.containsKey(word)) {
-                                    TreeSet<Integer> list = index.get(word);
-                                    list.add(docID);
-                                    ++counter;
-                                } else {
-                                    TreeSet<Integer> list = new TreeSet<>();
-                                    list.add(docID);
-                                    index.put(word, list);
-                                    ++counter;
-                                }
-                            }
+//                            if (counter > MAX_TERMS) {
+//                                // flush to disk
+//                                System.out.println("flushing...");
+//                                writeBlockToFile();
+//                                counter = 0;
+//                            } else {
+//                                if (index.containsKey(word)) {
+//                                    TreeSet<Integer> list = index.get(word);
+//                                    list.add(docID);
+//                                    ++counter;
+//                                } else {
+//                                    TreeSet<Integer> list = new TreeSet<>();
+//                                    list.add(docID);
+//                                    index.put(word, list);
+//                                    ++counter;
+//                                }
+                            counter = addWord(word, docID, counter);
                         }
                     }
                 }
@@ -76,6 +84,27 @@ public class Spimi {
             id++;
         }
         writeBlockToFile();
+    }
+
+    private int addWord(String word, int docID, int counter) {
+        if (counter > MAX_TERMS) {
+            // flush to disk
+            System.out.println("flushing...");
+            writeBlockToFile();
+            counter = 0;
+        } else {
+            if (index.containsKey(word)) {
+                TreeSet<Integer> list = index.get(word);
+                list.add(docID);
+                ++counter;
+            } else {
+                TreeSet<Integer> list = new TreeSet<>();
+                list.add(docID);
+                index.put(word, list);
+                ++counter;
+            }
+        }
+        return counter;
     }
 
     private void writeBlockToFile() {
@@ -114,11 +143,8 @@ public class Spimi {
             }
         });
         List<SpimiTerm> tmpEntries = new ArrayList<>();
-        String word;
-        for (int i = 0; i < bufferedReaders.size(); i++){
-//            if ((word = bufferedReaders.get(i).readLine()) != null)
-                tmpEntries.add(new SpimiTerm(bufferedReaders.get(i).readLine()));
-        }
+        for (int i = 0; i < bufferedReaders.size(); i++)
+            tmpEntries.add(new SpimiTerm(bufferedReaders.get(i).readLine()));
         try (BufferedWriter br = new BufferedWriter(new FileWriter("src/main/additional_files/spimi_result"));
              PrintWriter out = new PrintWriter(br)) {
             while (bufferedReaders.size() > 0) {
@@ -140,7 +166,7 @@ public class Spimi {
                 }
 
                 List<Integer> mergedPostingList = new ArrayList<>();
-                out.write(tmpEntries.get(smallestTermBlockIDs.get(0)).getTerm());
+                out.write(tmpEntries.get(smallestTermBlockIDs.get(0)).getTerm() + ':');
                 for (int i = smallestTermBlockIDs.size() - 1; i >= 0; i--) {
                     int blockId = smallestTermBlockIDs.get(i);
                     // merging postings lists
