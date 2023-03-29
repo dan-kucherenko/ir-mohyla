@@ -59,25 +59,8 @@ public class Spimi {
                 for (Element element : section.getElements()) {
                     String[] words = element.getText().trim().toLowerCase().split("\\W+");
                     for (String word : words) {
-                        if (!word.equals("") && word.length() >= 1) {
-//                            if (counter > MAX_TERMS) {
-//                                // flush to disk
-//                                System.out.println("flushing...");
-//                                writeBlockToFile();
-//                                counter = 0;
-//                            } else {
-//                                if (index.containsKey(word)) {
-//                                    TreeSet<Integer> list = index.get(word);
-//                                    list.add(docID);
-//                                    ++counter;
-//                                } else {
-//                                    TreeSet<Integer> list = new TreeSet<>();
-//                                    list.add(docID);
-//                                    index.put(word, list);
-//                                    ++counter;
-//                                }
+                        if (!word.equals("") && word.length() >= 1)
                             counter = addWord(word, docID, counter);
-                        }
                     }
                 }
             }
@@ -89,7 +72,6 @@ public class Spimi {
     private int addWord(String word, int docID, int counter) {
         if (counter > MAX_TERMS) {
             // flush to disk
-            System.out.println("flushing...");
             writeBlockToFile();
             counter = 0;
         } else {
