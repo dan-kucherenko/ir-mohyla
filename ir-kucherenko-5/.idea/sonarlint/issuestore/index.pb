@@ -5,7 +5,7 @@ d
 4src/main/java/kma/ir/kucherenko/spimi/SpimiTerm.java,8\8\887a248d5a218b41860a475aa927d930e0bea5dd
 `
 0src/main/java/kma/ir/kucherenko/spimi/Spimi.java,6\5\65007af00d5dbfd6ab563133dad563c4bae64619
-Y
-)src/main/java/kma/ir/kucherenko/Main.java,c\8\c89441d8015eab2d0b2f50b63cacd8c974dcc264
 V
 &src/main/additional_files/spimi_result,a\1\a180fc278722f6e7f3c9256e8e8f5e04cce99e50
+Y
+)src/main/java/kma/ir/kucherenko/Main.java,c\8\c89441d8015eab2d0b2f50b63cacd8c974dcc264

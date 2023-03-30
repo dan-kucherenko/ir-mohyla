@@ -3,7 +3,7 @@ package kma.ir.kucherenko.compressors.invertedindex;
 import java.io.*;
 
 public class GammaInvIndexCompressor {
-    public void createCompressedInvIndex(File sourceIndex, File resultIndex) {
+    public void createCompressedInvIndex(String sourceIndex, String resultIndex) {
         try (BufferedReader reader = new BufferedReader(new FileReader(sourceIndex));
              DataOutputStream writerBuff = new DataOutputStream(new FileOutputStream(resultIndex))) {
             String line;

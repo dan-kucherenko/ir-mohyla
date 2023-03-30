@@ -22,7 +22,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class Spimi {
-    private static int MAX_TERMS = 500000;
+    private static int MAX_TERMS = 100000;
     private final File[] documents;
     private static final String BLOCK_PATH = "src/main/additional_files/blocks";
     private final Reader reader;
@@ -38,12 +38,15 @@ public class Spimi {
     }
 
     public void executeSPIMI() {
+        long startTime = System.currentTimeMillis();
         buildSpimiIndex();
         try {
             mergeBlocksToFile();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        long endTime = System.currentTimeMillis();
+        System.out.println("Time taken: " + (endTime - startTime) + " ms");
     }
 
     private void buildSpimiIndex() {
@@ -62,21 +65,20 @@ public class Spimi {
                         for (String word : words) {
                             if (word.length() >= 1) {
                                 if (counter > MAX_TERMS) {
-                                    // flush to disk
-                                    System.out.println("flushing...");
+                                    System.out.println("writing block...");
                                     writeBlockToFile();
                                     counter = 0;
                                 } else {
+                                    TreeSet<Integer> list;
                                     if (index.containsKey(word)) {
-                                        TreeSet<Integer> list = index.get(word);
+                                        list = index.get(word);
                                         list.add(docID);
-                                        ++counter;
                                     } else {
-                                        TreeSet<Integer> list = new TreeSet<>();
+                                        list = new TreeSet<>();
                                         list.add(docID);
                                         index.put(word, list);
-                                        ++counter;
                                     }
+                                    ++counter;
                                 }
                             }
                         }
@@ -99,13 +101,13 @@ public class Spimi {
 
             try (BufferedWriter br = new BufferedWriter(new FileWriter(actualFile));
                  PrintWriter out = new PrintWriter(br)) {
-                for (java.util.Map.Entry<String, TreeSet<Integer>> entry : index.entrySet()) {
+                for (Map.Entry<String, TreeSet<Integer>> entry : index.entrySet()) {
                     String term = entry.getKey();
                     TreeSet<Integer> postingsList = entry.getValue();
                     out.write(term + " ");
                     for (Integer docID : postingsList)
                         out.write(docID + ",");
-                    out.write("\r\n");
+                    out.write("\n");
                 }
             }
         } catch (IOException e) {
