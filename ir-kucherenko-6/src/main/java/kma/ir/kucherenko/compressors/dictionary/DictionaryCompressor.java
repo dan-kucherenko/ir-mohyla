@@ -2,9 +2,7 @@ package kma.ir.kucherenko.compressors.dictionary;
 
 import kma.ir.kucherenko.TermDocument;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class DictionaryCompressor {
     TermDocument termDocument = null;
@@ -47,6 +45,44 @@ public class DictionaryCompressor {
         }
     }
 
+    public void frontDecoding(String inputFilePath, String outputFilePath) {
+        StringBuilder decoded = new StringBuilder();
+        String encodedString;
+        try (BufferedReader frontCodingReader = new BufferedReader(new FileReader(inputFilePath));
+             BufferedWriter decodedTermsWriter = new BufferedWriter(new FileWriter(outputFilePath))) {
+            while ((encodedString = frontCodingReader.readLine()) != null) {
+                int i = 0;
+                while (Character.isDigit(encodedString.charAt(i)))
+                    i++;
+                int prefixLength = Integer.parseInt(encodedString.substring(0, i));
+                String prefix = encodedString.substring(i, i + prefixLength);
+                i += prefixLength + 1;
+                while (i < encodedString.length()) {
+                    int suffixLengthStart = i;
+                    int suffixLength;
+                    if (Integer.parseInt(String.valueOf(encodedString.charAt(suffixLengthStart))) == 0)
+                        suffixLength = 0;
+                    else {
+                        while (Character.isDigit(encodedString.charAt(i)))
+                            i++;
+                        suffixLength = Integer.parseInt(encodedString.substring(suffixLengthStart, i));
+                    }
+                    if (suffixLength == 0) {
+                        decoded.append(prefix);
+                        i++;
+                    } else {
+                        decoded.append(prefix).append(encodedString, i,  i + suffixLength);
+                        i += suffixLength;
+                    }
+                    decodedTermsWriter.write(decoded.toString() + '\n');
+                    decoded.setLength(0); // clear the StringBuilder for next iteration
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private int getSizeOfCommonPart(String firstTerm, String[] blockTerms, int blockLength) {
         boolean flag = true;
         int commonPartSize = 0;
@@ -65,7 +101,8 @@ public class DictionaryCompressor {
         return commonPartSize;
     }
 
-    private void writeCoded(String[] blockTerms, StringBuilder sb, String firstTerm, int commonPartSize, int blockLength) {
+    private void writeCoded(String[] blockTerms, StringBuilder sb, String firstTerm, int commonPartSize,
+                            int blockLength) {
         sb.append(firstTerm.substring(0, commonPartSize).length()).append(firstTerm, 0, commonPartSize).append('*');
         for (int i = 0; i < blockLength; i++)
             sb.append(blockTerms[i].substring(commonPartSize).length()).append(blockTerms[i].substring(commonPartSize));

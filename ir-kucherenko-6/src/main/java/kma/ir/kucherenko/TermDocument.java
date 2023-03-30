@@ -56,8 +56,10 @@ public class TermDocument {
                     // Split the line into words
                     String[] wordsSection = sectionTextContent.split("\\W+");
                     for (String word : wordsSection) {
-                        word = word.toLowerCase().replaceAll("^\\W+", "")
-                                .replaceAll("\\W+$", "");
+                        word = word.toLowerCase().replaceAll("^\\W+","")
+                                .replaceAll("\\W+$", "").replaceAll("[0-9]", "");
+                        if(word.equals(""))
+                            continue;
                         curWord = new Term(word);
                         boolean hasKey = termDoc.containsKey(curWord.getWord());
                         if (hasKey)
