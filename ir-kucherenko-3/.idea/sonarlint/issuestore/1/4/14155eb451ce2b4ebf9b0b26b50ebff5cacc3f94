@@ -1,9 +1,0 @@
-
-:
-java:S1659"Declare "j" on a separate line.(á”æåþÿÿÿÿ
-h
-java:S1128"MRemove this unused import 'java.security.spec.InvalidParameterSpecException'.(ëä† þÿÿÿÿ
-J
-java:S1128"4Remove this unused import 'java.util.regex.Matcher'.(ëÅ›ã
-O
-java:S1128"4Remove this unused import 'java.util.regex.Pattern'.(Ã•…Äúÿÿÿÿ

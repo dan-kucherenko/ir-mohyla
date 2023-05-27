@@ -1,14 +1,0 @@
-
-‘
-java:S1192"tDefine a constant instead of duplicating this literal "If you want to continue, just type in a new request" 3 times.(§Ðü¿8´÷Îˆê0
-Z	java:S106"9Replace this use of System.out or System.err by a logger.(žäßôýÿÿÿÿ8Ó÷Îˆê0
-U	java:S106"9Replace this use of System.out or System.err by a logger.(¨“ÆÃ8Õ÷Îˆê0
-U	java:S106"9Replace this use of System.out or System.err by a logger.(§Ðü¿8Õ÷Îˆê0
-T	java:S106 "9Replace this use of System.out or System.err by a logger.(¤ýÕ8Ö÷Îˆê0
-Z	java:S106#"9Replace this use of System.out or System.err by a logger.(á‰à˜ÿÿÿÿÿ8Ö÷Îˆê0
-U	java:S106$"9Replace this use of System.out or System.err by a logger.(§Ðü¿8×÷Îˆê0
-U	java:S106("9Replace this use of System.out or System.err by a logger.(Äÿý‰8×÷Îˆê0
-Z	java:S106+"9Replace this use of System.out or System.err by a logger.(®ô˜ªýÿÿÿÿ8Ø÷Îˆê0
-U	java:S106,"9Replace this use of System.out or System.err by a logger.(§Ðü¿8Ø÷Îˆê0
-K
-java:S1128".Remove this unused import 'java.util.Objects'.(¼¸õ›8Ø÷Îˆê0
