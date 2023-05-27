@@ -24,4 +24,8 @@ hs_err_pid*
 
 ir-kucherenko-*/src/main/additional_files/*
 ir-kucherenko-*/src/main/collection/*
-ir-kucherenko-*/.idea/sonarlint/*
+ir-kucherenko-*/.idea
+ir-kucherenko-*/collection
+ir-kucherenko-*/additional_files
+
+.DS_Store

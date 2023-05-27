@@ -3,7 +3,9 @@ package kma.ir.kucherenko.spimi;
 import com.kursx.parser.fb2.Element;
 import com.kursx.parser.fb2.FictionBook;
 import com.kursx.parser.fb2.Section;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,26 +19,28 @@ import java.util.*;
 
 public class Spimi {
     private static int MAX_TERMS = 100000;
-    private final FictionBook[] documents;
-    private static final String BLOCK_PATH = "src/main/additional_files/blocks";
+    private final FictionBook document;
+    private static final String BLOCK_PATH = "additional_files/blocks/";
     private Map<String, TreeSet<Integer>> index = new TreeMap<>();
     private int counter = 0;
     private int serial = 0;
     private int id = 1;
 
     public Spimi(String sourcePath) {
-        File[] fileDocs = new File(sourcePath).listFiles();
-        this.documents = new FictionBook[fileDocs.length];
+        File fileDoc = new File(sourcePath);
         try {
-            for (int i = 0; i < documents.length; i++)
-                documents[i] = new FictionBook(fileDocs[i]);
-        } catch (Exception e) {
-            e.printStackTrace();
+            this.document = new FictionBook(fileDoc);
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            throw new RuntimeException(e);
         }
     }
 
     public Map<String, TreeSet<Integer>> getIndex() {
         return index;
+    }
+
+    public FictionBook getDocument(){
+        return document;
     }
 
     public void executeSPIMI() {
@@ -49,7 +53,6 @@ public class Spimi {
     }
 
     private void buildSpimiIndex() {
-        for (FictionBook document : documents) {
             int docID = id;
             String title = document.getTitle();
             String[] titleArr = title.split("\\W+");
@@ -63,7 +66,6 @@ public class Spimi {
                             counter = addWord(word, docID, counter);
                     }
                 }
-            }
             id++;
         }
         writeBlockToFile();
@@ -127,7 +129,7 @@ public class Spimi {
         List<SpimiTerm> tmpEntries = new ArrayList<>();
         for (int i = 0; i < bufferedReaders.size(); i++)
             tmpEntries.add(new SpimiTerm(bufferedReaders.get(i).readLine()));
-        try (BufferedWriter br = new BufferedWriter(new FileWriter("src/main/additional_files/spimi_result"));
+        try (BufferedWriter br = new BufferedWriter(new FileWriter("additional_files/results/" + document.getTitle() +"_spimi_result"));
              PrintWriter out = new PrintWriter(br)) {
             while (bufferedReaders.size() > 0) {
                 List<Integer> smallestTermBlockIDs = new ArrayList<>();
